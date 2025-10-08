@@ -1,14 +1,15 @@
-version: "2"
+
 configs:
   init_script:
-    file: /path/to/your/init/script
+    file: ./src/init
 volumes:
   vscode_data:
   vscode_cli_data:
 services:
   vscode:
-    image: ilteoood/vscode-remote-tunnels
-    container_name: vscode-remote-tunnels
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       - MACHINE_NAME=YOUR_MACHINE_NAME
     volumes:

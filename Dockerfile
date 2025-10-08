@@ -1,10 +1,5 @@
 FROM ubuntu:24.04
 
-LABEL maintainer.name="Matteo Pietro Dazzi" \
-    maintainer.email="matteopietro.dazzi@gmail.com" \
-    version="1.0.0" \
-    description="VSCode remote tunnels Docker image that can be easily deployed everywhere you want"
-
 ENV MACHINE_NAME=vscode-remote
 
 ARG TARGETARCH
