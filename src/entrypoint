@@ -4,4 +4,13 @@ cd $HOME
 
 sleep 5
 
-bash init && code tunnel --accept-server-license-terms --disable-telemetry --name ${MACHINE_NAME}
+bash init && code tunnel --accept-server-license-terms --disable-telemetry --name ${MACHINE_NAME} \
+    --install-extension ms-vscode-remote.remote-containers \
+    --install-extension GitHub.copilot \
+    --install-extension GitHub.copilot-chat \
+    --install-extension anthropic.claude-code \
+    --install-extension ms-python.python \
+    --install-extension ms-toolsai.jupyter \
+    --install-extension ms-azuretools.vscode-docker
+
+
