@@ -2,4 +2,6 @@
 
 cd $HOME
 
+sleep 5
+
 bash init && code tunnel --accept-server-license-terms --disable-telemetry --name ${MACHINE_NAME}

@@ -2,18 +2,19 @@
 configs:
   init_script:
     file: ./src/init
-volumes:
-  vscode_data:
 services:
   vscode:
     build:
       context: .
       dockerfile: Dockerfile
     user: ${UID:-0}:${GID:-0}
+    group_add:
+      - 27   # sudo
+      - 988  # docker
     post_start:
       - user: root
         command: |
-          bash -c "set -eux; mkdir -p ${HOME:-/root}; cp -a /etc/skel/. ${HOME:-/root}; chown -R ${USER:-root}:${USER:-root} ${HOME:-/root};"
+          bash -c "set -eux; mkdir -p ${HOME:-/root}; cp -nR /etc/skel/. ${HOME:-/root}; chown -R ${USER:-root} ${HOME:-/root};"
     working_dir: ${HOME:-/root}
     environment:
       - MACHINE_NAME=${MACHINE_NAME:-vscode-tunnel}
@@ -24,7 +25,9 @@ services:
       - /etc/shadow:/etc/shadow:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - vscode_data:${HOME:-/root}/.vscode-server
+      - /var/lib/docker:/var/lib/docker:rw
+      - /etc/sudoers:/etc/sudoers:ro
+      - ./data/vscode-server:${HOME:-/root}/.vscode-server
       - ./data/code_tunnel.json:${HOME:-/root}/.vscode/cli/code_tunnel.json
       - ./data/token.json:${HOME:-/root}/.vscode/cli/token.json
 
