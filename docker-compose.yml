@@ -4,23 +4,30 @@ configs:
     file: ./src/init
 volumes:
   vscode_data:
-  vscode_cli_data:
 services:
   vscode:
     build:
       context: .
       dockerfile: Dockerfile
+    user: ${UID:-0}:${GID:-0}
+    post_start:
+      - user: root
+        command: |
+          bash -c "set -eux; mkdir -p ${HOME:-/root}; cp -a /etc/skel/. ${HOME:-/root}; chown -R ${USER:-root}:${USER:-root} ${HOME:-/root};"
+    working_dir: ${HOME:-/root}
     environment:
-      - MACHINE_NAME=YOUR_MACHINE_NAME
+      - MACHINE_NAME=${MACHINE_NAME:-vscode-tunnel}
+      - HOME=${HOME:-/root}
     volumes:
-      - vscode_data:/root/.vscode-server
-      - vscode_cli_data:/root/.vscode/cli/code_tunnel.json
-      - vscode_cli_data:/root/.vscode/cli/token.json
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+      - /etc/shadow:/etc/shadow:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - vscode_data:${HOME:-/root}/.vscode-server
+      - ./data/code_tunnel.json:${HOME:-/root}/.vscode/cli/code_tunnel.json
+      - ./data/token.json:${HOME:-/root}/.vscode/cli/token.json
+
       - /var/run/docker.sock:/var/run/docker.sock
-    configs:
-      - source: init_script
-        target: /usr/local/bin/init
-        mode: 777
+      - ${HOME:-/root}:${HOME:-/root}/host_home
     restart: unless-stopped
-    dns:
-      - 1.1.1.1
