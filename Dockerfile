@@ -26,7 +26,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
         nano \
         vim \
         less yq jq \
-        tigervnc-standalone-server xfce4-session \
+        tigervnc-standalone-server fluxbox \
         wget nmap && \
     apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
