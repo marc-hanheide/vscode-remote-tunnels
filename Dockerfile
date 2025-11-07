@@ -40,6 +40,7 @@ RUN mkdir -p /etc/apt/keyrings && \
     apt-get update && \
     apt-get install -y \
         docker-ce-cli docker-compose-plugin \
+        xterm \
     && \
     apt-get clean -y && rm -rf /var/lib/apt/lists/*
 

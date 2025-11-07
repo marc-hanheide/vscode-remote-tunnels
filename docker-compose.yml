@@ -13,11 +13,12 @@ services:
     post_start:
       - user: root
         command: |
-          bash -c "set -eux; mkdir -p ${HOME:-/root}; cp -nR /etc/skel/. ${HOME:-/root}; chown -R ${USER:-root} ${HOME:-/root};"
+          bash -c "set -eux; mkdir -p ${HOME:-/root}; cp -nR /etc/skel/. ${HOME:-/root}; chown -R ${USER:-root} ${HOME:-/root} /opt/novnc;"
     working_dir: ${HOME:-/root}
     environment:
       - MACHINE_NAME=${MACHINE_NAME:-vscode-tunnel}
       - HOME=${HOME:-/root}
+      - DISPLAY=:1
     volumes:
       - home:${HOME:-/root}
       - /etc/passwd:/etc/passwd:ro
