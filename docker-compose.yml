@@ -1,7 +1,6 @@
 
-configs:
-  init_script:
-    file: ./src/init
+volumes:
+  home:
 services:
   vscode:
     build:
@@ -20,6 +19,7 @@ services:
       - MACHINE_NAME=${MACHINE_NAME:-vscode-tunnel}
       - HOME=${HOME:-/root}
     volumes:
+      - home:${HOME:-/root}
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
       - /etc/shadow:/etc/shadow:ro
@@ -27,9 +27,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/lib/docker:/var/lib/docker:rw
       - /etc/sudoers:/etc/sudoers:ro
-      - ./data/code_tunnel.json:${HOME:-/root}/.vscode/cli/code_tunnel.json
-      - ./data/token.json:${HOME:-/root}/.vscode/cli/token.json
-
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME:-/root}:${HOME:-/root}/host_home
     restart: unless-stopped
